@@ -26,7 +26,7 @@ ProductRouter.get("/:id", async (req, res, next) => {
         const product = await ProductsModel.findById(req.params.id)
         res.send(product)
     } catch (error) {
-        next(error)
+      res.status(404).send(error)
     }
 })
 // 4

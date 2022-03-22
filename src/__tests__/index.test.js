@@ -39,7 +39,8 @@ test("should test that the test endpoint returns a success message", async () =>
 
 const validProduct = {
         name: "Test Product",
-        price: 100
+        price: 100,
+        description: "cool"
     }
 
     it("should test that the POST /products endpoint returns the newly created product", async () => {
@@ -53,24 +54,29 @@ const validProduct = {
     //     whatever: 'something'
     // }
 
-    // it("should test that POST /products with INVALID data returns 400", async () => {
+    // test("should test that POST /products with INVALID data returns 400", async () => {
     //     const response = await request.post("/products").send(invalidData)
     //     expect(response.status).toBe(400)
     // })
-        // let theProductId
-        // test("should test that the GET /products endpoint returns the product we just created", async () => {
-            //     const response = await request.get("/products")
-            //     expect(response.body.length).toBe(1)
+        let theProductId
+        test("should test that the GET /products endpoint returns the product we just created", async () => {
+                const response = await request.get("/products")
+                expect(response.body.length).toBe(1)
             
-            //     theProductId = response.body[0]._id
-            // })
+                theProductId = response.body[0]._id
+            })
             
             
-            // test(" should test that test GET/endpoint and gives the created product", async () =>{
-    //     const response = await request.get(`/products/${theProductId}`)
-    //     expect(response.body.name).toBe(validProduct.name)
+            test(" should test that test GET/endpoint and gives the created product", async () =>{
+        const response = await request.get(`/products/${theProductId}`)
+        expect(response.body.name).toBe(validProduct.name)
     
-    // })
+    })
+    test("should test that the GET /products/:id returns 404 on a non-existent product", async () => {
+        const response = await request.get("/products/:123456123456123456123456")
+
+        expect(response.status).toBe(404)
+    })
     afterAll(async () => {
         await mongoose.connection.dropDatabase()
         await mongoose.connection.close()
